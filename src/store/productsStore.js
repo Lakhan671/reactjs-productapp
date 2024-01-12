@@ -1,6 +1,13 @@
 import { createSlice, configureStore } from '@reduxjs/toolkit';
 
-const initialProductsState = { products: [], editProduct:{}, isEdit: false };
+const fetchProductsData = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/comments");
+  return await response.json();
+};
+
+const initialProductsState = { products: [],posts: [], editProduct: {}, isEdit: false };
+
+
 
 const productsSlice = createSlice({
   name: 'products',
@@ -29,10 +36,22 @@ const productsSlice = createSlice({
     },
     setEditProduct(state,action){
     state.editProduct=action.payload;
+    },
+    setPosts(state,action){
+      state.posts=action.payload;
     }
 
   },
 });
+export const initializeProducts = () => async (dispatch) => {
+  try {
+    const data = await fetchProductsData();
+    dispatch(productsSlice.actions.setPosts(data));
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
 
 const store = configureStore({
   reducer: { products: productsSlice.reducer }

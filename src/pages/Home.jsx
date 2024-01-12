@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState,useEffect  } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import ProductDetails from '../components/products/ProductDetails.jsx';
-
+import { initializeProducts } from '../store/productsStore.js';
+import Posts from '../components/products/Posts.jsx';
 function HomePage() {
-  const products = useSelector((state) => state.products.products);
-  const [filterText, setFilterText] = useState('');
+  const dispatch = useDispatch();
 
+  const products = useSelector((state) => state.products.products);
+  const posts = useSelector((state) => state.products.posts);
+  const [filterText, setFilterText] = useState('');
+  useEffect(() => {
+    dispatch(initializeProducts());
+  }, [dispatch]);
   const filteredProducts = products.filter((product) =>
     product.category.toLowerCase().includes(filterText.toLowerCase())
   );
@@ -26,6 +32,13 @@ function HomePage() {
         <ul>
           {filteredProducts.map((product) => (
             <ProductDetails key={product.pid} product={product} />
+          ))}
+        </ul>
+        <hr/>
+        <div className='filter-container primary' ><h1>Post List</h1></div>
+        <ul>
+          {posts.map((post) => (
+            <Posts key={post.id} post={post} />
           ))}
         </ul>
       </section>
