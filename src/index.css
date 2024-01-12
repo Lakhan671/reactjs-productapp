@@ -96,3 +96,14 @@ main h2 {
   border-style: solid;
   
 }
+/* HomePage.css */
+
+.filter-container {
+  width: 30%;
+  margin: 0 auto; 
+  padding: 16px;
+}
+
+.filter-input {
+  width: 100%;
+}
